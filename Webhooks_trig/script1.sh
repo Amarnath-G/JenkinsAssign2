@@ -5,7 +5,8 @@ pwd
 ls -l
 
 #print
-echo "Hello World!"
-echo "line1-master"
+echo "Hello World! from"
+echo "line1-mas"
+
 
 echo "line3-master"
