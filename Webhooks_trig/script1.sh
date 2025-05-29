@@ -4,4 +4,5 @@ pwd
 #list 
 ls -l
 
-
+#print
+echo "Hello World"
