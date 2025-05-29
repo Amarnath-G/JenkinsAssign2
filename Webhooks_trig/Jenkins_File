@@ -1,0 +1,12 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Run the script') {
+            steps {
+                sh './script1.sh'
+            }
+        }
+    }
+}
