@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+
+    parameters {
+        base64File(name: 'MYFILE', description: 'Upload a file to be Base64-encoded and passed to the pipeline')
+    }
+
+    stages {
+        stage('Decode and Display Uploaded File') {
+            steps {
+                script {
+                    // Save the base64 content to a temp file
+                    writeFile file: 'uploaded.b64', text: params.MYFILE
+
+                    // Decode to original file
+                    sh '''
+                        base64 --decode uploaded.b64 > decoded_file.txt
+                        echo "===== Decoded File Content ====="
+                        cat decoded_file.txt
+                        echo "================================"
+                    '''
+                }
+            }
+        }
+        
+        stage('Encryption'){
+            steps {
+                script {
+                    withCredentials([string(credentialsId:'passwd',variable:'PASSWORD')]){
+                    sh """
+                        openssl enc -aes-256-cbc -salt -in decoded_file.txt -out encryp_file.aes -pass pass:"${PASSWORD}"
+                        echo "[INFO] File encrypted with AES-256-CBC."
+                        cat encryp_file.aes
+                        ls -l
+                    """
+                    }
+                }
+            }
+        }
+        
+        stage('Send Email'){
+            steps{
+                script{
+                    emailext(
+                        subject:"File Attached",
+                        body:"See the encrypted file",
+                        to:'gamarnathacct@gmail.com,amarnath.gongadisetty,manikanta.kandukuri',
+                        attachmentsPattern:"encryp_file.aes"
+                        )
+                }
+            }
+        }
+    }
+}
