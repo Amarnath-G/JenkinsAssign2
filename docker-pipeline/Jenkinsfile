@@ -9,7 +9,7 @@
                             docker ps &&
                             cd /home/ec2-user/dockerTasks/Assign2/task1 &&
                             docker build -t flask-app . && 
-                            docker run -p 3000:5000 flask-app
+                            docker run -d -p 3000:5000 flask-app
                             '
                             """
                     }
