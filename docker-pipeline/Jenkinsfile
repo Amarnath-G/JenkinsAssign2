@@ -7,6 +7,7 @@
                     withCredentials([file(credentialsId: 'privatekey2', variable: 'FILE_PATH')]) {
                         sh """ssh -o StrictHostKeyChecking=no -i $FILE_PATH ec2-user@13.61.100.59 '
                             docker ps &&
+                            cd /home/ec2-user/docker_tasks/Assign2/task1 &&
                             docker build -t flask-app . && 
                             docker run -p 3000:5000 flask-app
                             '
