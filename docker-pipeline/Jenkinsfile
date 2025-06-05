@@ -5,9 +5,11 @@
                 steps{
 
                     withCredentials([file(credentialsId: 'privatekey2', variable: 'FILE_PATH')]) {
-                        sh """ssh -o StrictHostKeyChecking=no -i $FILE_PATH ec2-user@13.61.100.59 docker ps &&
-                            docker -t build flask-app .
+                        sh """ssh -o StrictHostKeyChecking=no -i $FILE_PATH ec2-user@13.61.100.59 '
+                            docker ps &&
+                            docker build -t flask-app . && 
                             docker run -p 3000:5000 flask-app
+                            '
                             """
                     }
                 }
