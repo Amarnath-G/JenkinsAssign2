@@ -1,14 +1,16 @@
-pipeline{
-    agent any
-    stages{
-        stage('Buid'){
-            steps{
+    pipeline{
+        agent any
+        stages{
+            stage('Buid'){
+                steps{
 
-                withCredentials([file(credentialsId: 'privatekey2', variable: 'FILE_PATH')]) {
-                    sh """ssh -o StrictHostKeyChecking=no -i $FILE_PATH ec2-user@13.61.100.59 docker ps
-                    """
+                    withCredentials([file(credentialsId: 'privatekey2', variable: 'FILE_PATH')]) {
+                        sh """ssh -o StrictHostKeyChecking=no -i $FILE_PATH ec2-user@13.61.100.59 docker ps &&
+                            docker -t build flask-app .
+                            docker run -p 3000:5000 flask-app
+                            """
+                    }
                 }
             }
         }
     }
-}
